@@ -8,50 +8,46 @@ import requests
 import pymongo 
 import sys
 import re
-import urlparse
+import urllib.parse # import urlparse
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
 reload(sys)
 
-
 client = pymongo.MongoClient('mongodb://localhost:27017/')
-
-
 
 db = client.DoctorBotDBV2
 
+symptoms_url =  "https://www.umms.org/ummc/patients-visitors/health-library/medical-encyclopedia/symptoms?c=c"
 
-symptoms_url =  "http://umm.edu/health/medical/ency/symptoms?c="
+disease_url = "https://www.umms.org/ummc/patients-visitors/health-library/medical-encyclopedia/diseases?c=c"
 
-disease_url = "http://umm.edu/health/medical/ency/diseases?c="
+test_url = "https://www.umms.org/ummc/patients-visitors/health-library/medical-encyclopedia/tests?c=c"
 
-test_url = "http://umm.edu/health/medical/ency/tests?c="
-
-surgery_url = "http://umm.edu/health/medical/ency/surgery?c="
+surgery_url = "https://www.umms.org/ummc/patients-visitors/health-library/medical-encyclopedia/surgery?c=c"
 
  #ExtractSymptomsOrDiseasesOrTestList(symptoms_url);
 
 MedicalData = {}
 
-print "extracting Disease List"
+print ("extracting Disease List")
 ExtractList(disease_url , MedicalData , 'd')
 
-print "extracting Symptoms List"
+print ("extracting Symptoms List")
 ExtractList(symptoms_url , MedicalData , 's')
 
-print "extracting Test List"
+print ("extracting Test List")
 ExtractList(test_url , MedicalData , 't' )
 
-print "extracting surgery List"
+print ("extracting surgery List")
 ExtractList(surgery_url , MedicalData , 'u' )
 
 ContentUrl = "https://www.nlm.nih.gov/medlineplus/ency/encyclopedia_"
 
-print "Crawling data"
+print ("Crawling data")
 
 CrawlData( ContentUrl , MedicalData )
 
-print "Adding into Database"
+print ("Adding into Database")
 
 f = open("newDict",'w')
 
@@ -73,8 +69,4 @@ pickle.dump(MedicalData, f, pickle.HIGHEST_PROTOCOL)
 #print l
 
 
-
-
 #print DiseaseNamesList
-
-
